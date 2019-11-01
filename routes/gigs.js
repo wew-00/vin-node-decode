@@ -4,80 +4,111 @@ const db = require('../config/database');
 const Gig = require('../models/Gig');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
-
+const mongoose = require('mongoose');
 // Get gig list
-router.get('/', (req, res) => 
-  Gig.findAll()
-    .then(gigs => res.render('gigs', {
-        gigs
-      }))
-    .catch(err => console.log(err)));
+router.get('/', (req, res) =>
+    Gig.find()
+        .then(gigs => res.render('gigs', {
+            gigs
+        }))
+        .catch(err => console.log(err)));
 
 // Display add gig form
 router.get('/add', (req, res) => res.render('add'));
 
 // Add a gig
 router.post('/add', (req, res) => {
-  let { title, technologies, budget, description, contact_email } = req.body;
-  let errors = [];
+    let {name, vin_code, model, made_in,details, cusov, wheel,picture,type_cusov, door, engine, equipment, country, electric} = req.body;
+    let errors = [];
 
-  // Validate Fields
-  if(!title) {
-    errors.push({ text: 'Please add a title' });
-  }
-  if(!technologies) {
-    errors.push({ text: 'Please add some technologies' });
-  }
-  if(!description) {
-    errors.push({ text: 'Please add a description' });
-  }
-  if(!contact_email) {
-    errors.push({ text: 'Please add a contact email' });
-  }
-
-  // Check for errors
-  if(errors.length > 0) {
-    res.render('add', {
-      errors,
-      title, 
-      technologies, 
-      budget, 
-      description, 
-      contact_email
-    });
-  } else {
-    if(!budget) {
-      budget = 'Unknown';
-    } else {
-      budget = `$${budget}`;
+    // Validate Fields
+    if (!name) {
+        errors.push({text: 'Please add a title'});
+    }
+    if (!vin_code) {
+        errors.push({text: 'Please add some technologies'});
+    }
+    if (!model) {
+        errors.push({text: 'Please add a description'});
+    }
+    if (!cusov) {
+        errors.push({text: 'Please add a cusov'});
+    }
+    if (!wheel) {
+        errors.push({text:'Please add a wheel'});
+    }
+    if (!country) {
+        errors.push({text: 'Please add a country'});
+    }
+    if (!electric) {
+        errors.push({text:'Please add a electric'});
     }
 
-    // Make lowercase and remove space after comma
-    technologies = technologies.toLowerCase().replace(/, /g, ',');
+    // Check for errors
+    if (errors.length > 0) {
+        res.render('add', {
+            errors,
+            name,
+            vin_code,
+            model,
+            made_in,
+            details,
+            cusov,
+            wheel,
+            picture,
+            type_cusov,
+            door,
+            engine,
+            equipment,
+            country,
+            electric
 
-    // Insert into table
-    Gig.create({
-      title,
-      technologies,
-      description,
-      budget,
-      contact_email
-    })
-      .then(gig => res.redirect('/gigs'))
-      .catch(err => console.log(err));
-  }
+        });
+    } else {
+        if (!model) {
+            model = 'Unknown';
+        } else {
+            model = `$${model}`;
+        }
+
+        // Make lowercase and remove space after comma
+        vin_code = vin_code.toLowerCase().replace(/, /g, ',');
+
+        // Insert into table
+        Gig.create({
+            name,
+            vin_code,
+            model,
+            made_in,
+            details,
+            cusov,
+            wheel,
+            picture,
+            type_cusov,
+            door,
+            engine,
+            equipment,
+            country,
+            electric
+        })
+            .then(gig => res.redirect('/gigs'))
+            .catch(err => console.log(err));
+    }
 });
 
 // Search for gigs
 router.get('/search', (req, res) => {
-  let { term } = req.query;
+    let {term} = req.query;
 
-  // Make lowercase
-  term = term.toLowerCase();
+    // Make lowercase
+    term = term.toUpperCase();
 
-  Gig.findAll({ where: { technologies: { [Op.like]: '%' + term + '%' } } })
-    .then(gigs => res.render('gigs', { gigs }))
-    .catch(err => console.log(err));
+    Gig.find({vin_code: term})
+        .then(gigs => res.render('gigs', {gigs}))
+        .catch(err => console.log(err))
+        .catch(err1=> cosnole.log(err1))
+
+
 });
 
 module.exports = router;

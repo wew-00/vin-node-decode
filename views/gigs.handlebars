@@ -1,20 +1,130 @@
 <section id="gigs" class="container">
-    <h1>All Gigs</h1>
+    <h1>All Vins</h1>
 
     {{#each gigs}}
-      <div class="gig">
-      <h3>{{title}}</h3>
-      <p>{{description}}</p>
-      <ul>
-        <li>Budget: {{budget}}</li>
-        <li><a href="mailto:{{contact_email}}" class="btn btn-reverse">Apply Now</a></li>
-      </ul>
-      <div class="tech">
-        <small>Technologies Needed: <span>{{technologies}}</span></small>
-      </div>
-    </div>
+        <div class="gig">
+            <h2>Марка : {{name}}</h2>
+            <p>Модель : {{model}}</p>
+            <p>Год : {{made_in}}</p>
+            <p>Страна производитель: {{country}}</p>
+            <p>Тип кузова : {{type_cusov}}</p>
+            <p> Дверей : {{door}}</p>
+            <p>Двигатель : {{engine}}</p>
+            <p>Комплектация : {{equipment}}</p>
+            <p>Детали : {{details}}
+                <!--li></li>
+                <li> Кузов : <a href="{{cusov}}" class="btn btn-reverse">Buy Now</a></li>
+                <li>Диски : <a href="{{wheel}}" class="btn btn-reverse">Buy Now</a></li>
+                <li>Электроника : <a href="{{electric}}" class="btn btn-reverse">Buy Now</a></li-->
+            </p>
+            <div class="section">
+                <div class="menu-block">
+                    <nav class="menu-nav">
+                        <a href="{{cusov}}">Кузов</a>
+                        <a href="{{wheel}}">Диски</a>
+                        <a href="{{electric}}">Электроника </a>
+                        <a >Contacts</a>
+                    </nav>
+
+                    <a href="#" class="menu-btn">
+                        <span></span>
+                    </a>
+
+                </div>
+            </div>
+            <div class="tech">
+                <small>Vin code: <span>{{vin_code}}</span></small>
+            </div>
+        </div>
     {{else}}
-      <p>No gigs available</p>
+        <p>No gigs available</p>
     {{/each}}
-    
-  </section>
+
+</section>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<style>
+
+    .menu-btn {
+        display: block;
+        width: 50px;
+        height: 50px;
+        background-color: #fff;
+        border-radius: 50%;
+        position: relative;
+    }
+    .menu-btn span,
+    .menu-btn span::before,
+    .menu-btn span::after {
+        position: absolute;
+        top: 50%; margin-top: -1px;
+        left: 50%; margin-left: -10px;
+        width: 20px;
+        height: 2px;
+        background-color: #222;
+    }
+    .menu-btn span::before,
+    .menu-btn span::after {
+        content: '';
+        display: block;
+        transition: 0.2s;
+    }
+    .menu-btn span::before {
+        transform: translateY(-5px);
+    }
+    .menu-btn span::after {
+        transform: translateY(5px);
+    }
+
+    .menu-btn_active span:before {
+        transform: rotate(-35deg);
+        width: 10px;
+        transform-origin: left bottom;
+    }
+    .menu-btn_active span:after {
+        transform: rotate(35deg);
+        width: 10px;
+        transform-origin: left top;
+    }
+    .menu-block {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .menu-nav a {
+        text-decoration: none;
+        color: #222;
+        text-transform: uppercase;
+        font-weight: 100;
+        display: inline-block;
+        margin-right: 20px;
+        transition: 1s;
+    }
+    .menu-nav {
+        transition: 0.2s;
+        transform: scaleX(0) translateX(0%);
+        transform-origin: right center;
+        opacity: 0;
+        visibility: hidden;
+        height: 50px;
+        line-height: 50px;
+        background-color: #fff;
+        padding-right: 25px;
+        padding-left: 25px;
+        margin-right: -25px;
+        border-top-left-radius: 50px;
+        border-bottom-left-radius: 50px;
+    }
+    .menu-nav_active {
+        transform: scaleX(1) translateX(0%);
+        opacity: 1;
+        visibility: visible;
+    }
+</style>
+<script>
+    $('.menu-btn').on('click', function(e) {
+        e.preventDefault();
+        $(this).toggleClass('menu-btn_active');
+        $('.menu-nav').toggleClass('menu-nav_active');
+    });
+</script>
