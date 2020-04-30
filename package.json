@@ -14,7 +14,7 @@
     "express": "^4.16.4",
     "express-handlebars": "^3.0.0",
     "hamburgers": "file:hamburgers",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "mongoose": "^5.7.3",
     "pg": "^7.7.1",
     "pg-hstore": "^2.3.2",
